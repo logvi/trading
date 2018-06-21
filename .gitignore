@@ -1,0 +1,7 @@
+node_modules
+assets
+*.bak
+bakstuff
+**/.idea/
+**/*.iml
+package.json.sha1
