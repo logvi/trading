@@ -1,8 +1,13 @@
 @import "reset";
 @import "fonts";
 @import "components/loader";
+@import "components/datatable";
 
 body {
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
   background-color: #efefef;
+}
+
+.page-content {
+  padding: 10px;
 }
