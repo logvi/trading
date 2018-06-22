@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 import TradesTable from './TradesTable';
+import TradesStatistics from './TradesStatistics';
 
 @inject('trade')
 class TradesCard extends Component {
@@ -17,8 +18,13 @@ class TradesCard extends Component {
     return (
       <Card className="card">
         <CardHeader title={<Typography variant="title">Trades</Typography>} />
-        <CardContent>
-          <Button variant="raised" color="primary" onClick={this.newTradeClickHandler}>New Trade</Button>
+        <CardContent className="trades-card-content">
+          <div>
+            <Button variant="raised" color="primary" onClick={this.newTradeClickHandler}>New Trade</Button>
+          </div>
+          <div>
+            <TradesStatistics/>
+          </div>
           <div>
             <TradesTable />
           </div>

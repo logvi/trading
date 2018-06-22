@@ -1,0 +1,16 @@
+.trades-statistics {
+  > div {
+    display: flex;
+    align-items: center;
+
+    &:nth-child(n+2) {
+      margin-top: 20px;
+    }
+
+    > div {
+      &:nth-child(n+2) {
+        margin-left: 20px;
+      }
+    }
+  }
+}
