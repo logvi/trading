@@ -1,0 +1,26 @@
+.trade-dialog {
+  .trade-dialog__fields {
+    display: flex;
+    justify-content: space-between;
+
+    > div {
+      flex: 1;
+
+      &:nth-child(n+2) {
+        margin-left: 20px;
+      }
+
+      > div {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .trade-dialog__totals {
+    display: flex;
+
+    > div:nth-child(n+2) {
+      margin-left: 20px;
+    }
+  }
+}

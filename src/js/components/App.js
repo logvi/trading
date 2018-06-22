@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import TradesCard from './TradesCard';
-import TradeModal from './Modals/TradeModal';
+import TradeModal from './Dialogs/TradeDialog';
 
 function App() {
   return (
