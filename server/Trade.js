@@ -5,10 +5,10 @@ autoIncrement.initialize(mongoose.connection);
 
 const tradeSchema = mongoose.Schema({
   id: Number,
-  amount: Number,
-  type: String,
-  priceOpen: Number,
-  timeOpen: Date,
+  amount: {type: Number, required: true},
+  type: {type: String, required: true, match: /^SELL$|^BUY$/},
+  priceOpen: {type: Number, required: true},
+  timeOpen: {type: Date, required: true},
   priceClose: Number,
   timeClose: Date,
   stopLoss: Number,

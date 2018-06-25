@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const symbolSchema = mongoose.Schema({
-  symbol: {type: String, unique : true, required : true, dropDups: true},
+  symbol: {type: String, unique : true, required : true, dropDups: true, minlength: 2},
   priceStep: {type: Number, default: 1},
   priceStepCost: {type: Number, default: 1},
   go: Number
