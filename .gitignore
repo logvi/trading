@@ -5,3 +5,5 @@ bakstuff
 **/.idea/
 **/*.iml
 package.json.sha1
+x.md
+start.sh
