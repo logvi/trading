@@ -1,7 +1,17 @@
+const http = require('http');
 const mongoose = require('mongoose');
+const io = require('socket.io')();
 require('./db');
 const Trade = require('./Trade');
 const Symbol = require('./Symbol');
+
+http.createServer((req, res) => {}).listen(3000, () => {
+  console.log('server is running on 3000');
+});
+
+io.on('connection', socket => {
+  console.log('user connected');
+});
 
 function setTrade(data) {
   return new Promise((resolve, reject) => {
