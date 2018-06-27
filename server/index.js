@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 require('./db');
 const Trade = require('./Trade');
 const Symbol = require('./Symbol');
@@ -12,7 +13,12 @@ function setTrade(data) {
       priceStepCost: symbolData.priceStepCost,
       go: symbolData.go
     }, options).then(symbol => {
+      if (!data._id) {
+        data._id = new mongoose.mongo.ObjectID();
+      }
+      console.log(data._id);
       Trade.findOneAndUpdate({_id: data._id},{
+        _id: data._id,
         amount: data.amount,
         type: data.type,
         priceOpen: data.priceOpen,
@@ -47,6 +53,56 @@ function getClosedTradesCount() {
   return Trade.count(({timeClose: {$ne: null}}));
 }
 
+function getTotalProfit(filter) {
+  let actions = [];
+  if (filter) {
+    actions.push({
+      $match: filter
+    });
+  }
+
+  actions.push( {
+    $group: {
+      _id: null,
+      total: {$sum: '$profit'}
+    }
+  });
+
+  return Trade.aggregate(actions);
+}
+
+function getOpenVolume() {
+  return Trade.aggregate([
+    {
+      $match: {
+        timeClose: null
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        total: {$sum: '$volume'}
+      }
+    }
+  ]);
+}
+
+function getOpenStopLossVolume() {
+  return Trade.aggregate([
+    {
+      $match: {
+        timeClose: null
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        total: {$sum: '$stopLossVolume'}
+      }
+    }
+  ]);
+}
+
 // setTrade({
 //   symbol: {
 //     symbol: 'SIM8',
@@ -57,9 +113,17 @@ function getClosedTradesCount() {
 //   amount: 10,
 //   type: 'SELL',
 //   priceOpen: 206.58,
-//   timeOpen: new Date()
+//   timeOpen: new Date(),
+//   volume: 10,
+//   timeClose: new Date()
 // }).then(result => {
 //   console.log('success', result)
 // }).catch(err => console.log('error', err));
 
 // getTrades().then(trades => console.log(trades));
+
+// getOpenVolume().then(res => console.log(res));
+
+// let d = new Date();
+// d.setMonth(d.getMonth() - 1);
+// getTotalProfit({timeClose: {$lte: d}}).then(res => console.log(res));
