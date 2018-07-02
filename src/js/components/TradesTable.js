@@ -8,14 +8,17 @@ import formatDate from '../utils/formatDate';
 
 const COLUMNS = [
   new Column({
-    name: 'ticket',
-    title: 'Ticket',
+    name: 'id',
+    title: 'Id',
     sortable: true
   }),
   new Column({
     name: 'symbol',
     title: 'Symbol',
-    sortable: true
+    sortable: true,
+    renderer: (column, row) => {
+      return row.symbol.symbol;
+    }
   }),
   new Column({
     name: 'type',
@@ -84,6 +87,7 @@ class TradesTable extends React.Component {
 
   render() {
     const {data, isLoading, orderBy} = this.props.trades;
+    console.log(data[0]);
     return (
       <DataTable
         className="trades-table"

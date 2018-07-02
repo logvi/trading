@@ -7,4 +7,7 @@
 5. (+) Server: getTotalProfit (with period filter)
 6. (+) Server: getOpenVolume
 7. (+) Server: getOpenStopLossVolume
-8. Organize communication between server and client (websocket)
+8. (+) Organize communication between server and client (websocket)
+9. Client: get trades
+10: Client: routing
+--. websocket with auth

@@ -147,6 +147,12 @@ class Server {
       this.methodListeners[type][msg.msgId] = fn;
     }
   }
+
+  listen = (event, callback) => {
+    this.socket.on(event, data => {
+      callback(data);
+    });
+  }
 }
 
 export default Server;

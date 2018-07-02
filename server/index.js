@@ -5,12 +5,21 @@ require('./db');
 const Trade = require('./Trade');
 const Symbol = require('./Symbol');
 
-http.createServer((req, res) => {}).listen(3000, () => {
+const server = http.createServer((req, res) => {}).listen(3000, () => {
   console.log('server is running on 3000');
 });
 
+io.attach(server);
+
 io.on('connection', socket => {
   console.log('user connected');
+
+  socket.on('getTrades', data => {
+    console.log('getTrades', data);
+    getTrades().then(trades => {
+      socket.emit('getTrades', {msgId: data.msgId, data: {trades}});
+    });
+  });
 });
 
 function setTrade(data) {
