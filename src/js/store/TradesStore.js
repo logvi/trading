@@ -2,7 +2,7 @@ import {observable, action} from 'mobx';
 import api from '../api';
 
 class TradesStore {
-  @observable.shallow data = [];
+  @observable data = [];
   @observable isLoading = false;
   @observable orderBy = {};
 

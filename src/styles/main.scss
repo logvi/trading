@@ -5,6 +5,21 @@
 @import "components/tradedialog";
 @import "components/tradescard";
 @import "components/tradesstatistics";
+@import "components/card";
+
+html, body, #app, .app-container {
+  height: 100%;
+}
+
+.app-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+}
 
 body {
   font-family: 'Roboto', Arial, Helvetica, sans-serif;

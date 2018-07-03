@@ -5,18 +5,18 @@ import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
-import TradesTable from './TradesTable';
+import TradesTable from './Tables/TradesTable';
 import TradesStatistics from './TradesStatistics';
 
 @inject('trade')
 class TradesCard extends Component {
   newTradeClickHandler = () => {
-    this.props.trade.setTicket(1);
+    this.props.trade.setData();
   };
 
   render() {
     return (
-      <Card className="card">
+      <Card className="card card--flex">
         <CardHeader title={<Typography variant="title">Trades</Typography>} />
         <CardContent className="trades-card-content">
           <div>

@@ -2,11 +2,16 @@ import React from 'react';
 import {observer} from 'mobx-react';
 import PropsTypes from 'prop-types';
 import {inject} from 'mobx-react';
-import DataTable from './DataTable';
-import Column from './DataTable/models/Column';
-import formatDate from '../utils/formatDate';
+import DataTable from '../DataTable';
+import Column from '../DataTable/models/Column';
+import DateTimeColumn from './TableColumns/DateTimeColumn';
 
 const COLUMNS = [
+  new Column({
+    name: '_id',
+    title: '_id',
+    visible: false
+  }),
   new Column({
     name: 'id',
     title: 'Id',
@@ -28,7 +33,8 @@ const COLUMNS = [
   new Column({
     name: 'timeOpen',
     title: 'Open Time',
-    sortable: true
+    sortable: true,
+    renderer: DateTimeColumn
   }),
   new Column({
     name: 'priceOpen',
@@ -53,7 +59,8 @@ const COLUMNS = [
   new Column({
     name: 'timeClose',
     title: 'Close Time',
-    sortable: true
+    sortable: true,
+    renderer: DateTimeColumn
   }),
   new Column({
     name: 'priceClose',
@@ -67,7 +74,7 @@ const COLUMNS = [
   }),
 ];
 
-@inject("trades")
+@inject('trades', 'trade')
 @observer
 class TradesTable extends React.Component {
   static propTypes = {
@@ -76,6 +83,10 @@ class TradesTable extends React.Component {
 
   onTableAction = (action, params) => {
     switch(action) {
+      case 'rowClick':
+        // console.log(params);
+        this.props.trade.getTrade(params.row._id);
+        break;
       case 'sort':
         if (this.props.trades.isLoading) return;
         this.props.trades.setOrderBy({[params.column.name]:params.orderBy});
@@ -87,7 +98,7 @@ class TradesTable extends React.Component {
 
   render() {
     const {data, isLoading, orderBy} = this.props.trades;
-    console.log(data[0]);
+
     return (
       <DataTable
         className="trades-table"
@@ -97,6 +108,7 @@ class TradesTable extends React.Component {
         onAction={this.onTableAction}
         orderBy={orderBy}
         stripped
+        showRowHover
       />
     );
   }

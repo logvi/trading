@@ -8,8 +8,8 @@ import Router from './Router';
 class Store {
   trades = new TradesStore();
   modal = new ModalStore();
-  trade = new TradeStore();
   router = new Router(this);
+  trade = new TradeStore();
 
   constructor() {
     this.router.resolve(location);
@@ -21,7 +21,7 @@ class Store {
         this.trades.getData();
         break;
     }
-  }
+  };
 }
 
 export default Store;

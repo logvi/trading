@@ -14,10 +14,10 @@ io.attach(server);
 io.on('connection', socket => {
   console.log('user connected');
 
-  socket.on('getTrades', data => {
-    console.log('getTrades', data);
-    getTrades().then(trades => {
-      socket.emit('getTrades', {msgId: data.msgId, data: {trades}});
+  socket.on('getTrades', request => {
+    console.log('getTrades', request);
+    getTrades(request.data).then(trades => {
+      socket.emit('getTrades', {msgId: request.msgId, data: {trades}});
     });
   });
 });

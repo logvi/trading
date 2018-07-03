@@ -1,4 +1,4 @@
-const locale = 'en-US';
+const locale = 'ru-Ru';
 
 const formatDate = (date, {displayTime = false} = {}) => {
     if (!date) return null;

@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 @observer
 class TradeDialog extends Component {
   get isOpen() {
-    return !!this.props.trade.ticket;
+    return Boolean(!!this.props.trade.data && this.props.trade.data.id != null);
   }
 
   onSave = () => {
@@ -21,7 +21,7 @@ class TradeDialog extends Component {
   };
 
   handleClose = () => {
-    this.props.trade.setTicket(null);
+    this.props.trade.setValue('id', null);
   };
 
   onFieldChange = ({target}) => {
@@ -30,8 +30,10 @@ class TradeDialog extends Component {
   };
 
   render() {
-    const {type, amount, timeOpen, timeClose, priceOpen, priceClose, stopLoss, volume, stopLossVolume, profit} = this.props.trade;
-    const {symbol, priceStep, priceStepCost, go} = this.props.trade.symbol;
+    if (!this.props.trade.data) return null;
+
+    const {type, amount, timeOpen, timeClose, priceOpen, priceClose, stopLoss, volume, stopLossVolume, profit, id} = this.props.trade.data;
+    const {symbol, priceStep, priceStepCost, go} = this.props.trade.data.symbol;
 
     return (
       <Dialog
@@ -40,7 +42,7 @@ class TradeDialog extends Component {
         aria-labelledby="alert-dialog-slide-title"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          Trade
+          Trade {id || id === 0 ? id : ''}
         </DialogTitle>
         <DialogContent className="trade-dialog">
           <div className="trade-dialog__fields">
@@ -76,7 +78,7 @@ class TradeDialog extends Component {
                 <TextField
                   label="GO"
                   type="number"
-                  value={go}
+                  value={go || ''}
                   inputProps={{name: 'go'}}
                   onChange={this.onFieldChange}
                 />
@@ -101,7 +103,7 @@ class TradeDialog extends Component {
                   label="Amount"
                   inputProps={{name: 'amount'}}
                   type="number"
-                  value={amount}
+                  value={amount || 0}
                   onChange={this.onFieldChange}
                 />
               </div>
@@ -110,7 +112,7 @@ class TradeDialog extends Component {
                   label="Open Price"
                   inputProps={{name: 'priceOpen'}}
                   type="number"
-                  value={priceOpen}
+                  value={priceOpen || 0}
                   onChange={this.onFieldChange}
                 />
               </div>
@@ -128,7 +130,7 @@ class TradeDialog extends Component {
                   label="SL Price"
                   inputProps={{name: 'stopLoss'}}
                   type="number"
-                  value={stopLoss}
+                  value={stopLoss || 0}
                   onChange={this.onFieldChange}
                 />
               </div>
@@ -137,7 +139,7 @@ class TradeDialog extends Component {
                   label="Close Price"
                   inputProps={{name: 'priceClose'}}
                   type="number"
-                  value={priceClose}
+                  value={priceClose || 0}
                   onChange={this.onFieldChange}
                 />
               </div>
@@ -157,7 +159,7 @@ class TradeDialog extends Component {
             <div>
               <TextField
                 label="Volume"
-                value={volume}
+                value={volume || ''}
                 type="number"
                 disabled
               />
@@ -165,7 +167,7 @@ class TradeDialog extends Component {
             <div>
               <TextField
                 label="SL Volume"
-                value={stopLossVolume}
+                value={stopLossVolume || ''}
                 type="number"
                 disabled
               />
@@ -173,7 +175,7 @@ class TradeDialog extends Component {
             <div>
               <TextField
                 label="Profit"
-                value={profit}
+                value={profit || ''}
                 type="number"
                 disabled
               />
