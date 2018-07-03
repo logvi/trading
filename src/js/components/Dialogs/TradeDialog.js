@@ -9,19 +9,21 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 
-@inject('trade')
+@inject('trade', 'trades')
 @observer
 class TradeDialog extends Component {
   get isOpen() {
-    return Boolean(!!this.props.trade.data && this.props.trade.data.id != null);
+    return Boolean(!!this.props.trade.data && this.props.trade.data._id);
   }
 
   onSave = () => {
-    this.props.trade.save();
+    this.props.trade.save().then(() => {
+      this.props.trades.getData();
+    });
   };
 
   handleClose = () => {
-    this.props.trade.setValue('id', null);
+    this.props.trade.setValue('_id', null);
   };
 
   onFieldChange = ({target}) => {
@@ -32,7 +34,7 @@ class TradeDialog extends Component {
   render() {
     if (!this.props.trade.data) return null;
 
-    const {type, amount, timeOpen, timeClose, priceOpen, priceClose, stopLoss, volume, stopLossVolume, profit, id} = this.props.trade.data;
+    const {type, amount, timeOpen, timeClose, priceOpen, priceClose, stopLoss, volume, stopLossVolume, profit, id, _id} = this.props.trade.data;
     const {symbol, priceStep, priceStepCost, go} = this.props.trade.data.symbol;
 
     return (

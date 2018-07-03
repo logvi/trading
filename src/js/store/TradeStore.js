@@ -33,6 +33,7 @@ class TradeStore {
   };
 
   @action setValue = (field, value) => {
+    if (field === '_id') return this.data[field] = value;
     if (this.data.symbol.hasOwnProperty(field)) return this.setSymbol(field, value);
     if (!this.data.hasOwnProperty(field)) return;
     this.data[field] = value;
@@ -44,8 +45,8 @@ class TradeStore {
   };
 
   @action setData = (data = {
-    _id: null,
-    id: 'new',
+    _id: 'new',
+    id: null,
     amount: 0,
     type: 'BUY',
     priceOpen: 0,
@@ -71,6 +72,14 @@ class TradeStore {
   @action getTrade = _id => {
     api.getTrades({filter: {_id}}).then(trade => {
       this.setData(trade);
+    });
+  };
+
+  @action save = () => {
+    return new Promise((resolve, reject) => {
+      api.setTrade(this.data).then(trade => {
+        resolve(trade);
+      });
     });
   };
 }

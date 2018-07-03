@@ -9,8 +9,7 @@
 7. (+) Server: getOpenStopLossVolume
 8. (+) Organize communication between server and client (websocket)
 9. (+) Client: get trades
-10. Client: routing
-11. Client: open existing trade
-12. Client: Edit existing trade
-13. Client: Add new trade
---. websocket with auth
+10.(+) Client: routing
+11.(+) Client: open existing trade
+12. Client: Sace trade
+13. Client and Server: remove trade

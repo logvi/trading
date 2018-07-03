@@ -20,6 +20,13 @@ io.on('connection', socket => {
       socket.emit('getTrades', {msgId: request.msgId, data: {trades}});
     });
   });
+
+  socket.on('setTrade', request => {
+    console.log('setTrade', request);
+    setTrade(request.data).then(trade => {
+      socket.emit('setTrade', {msgId: request.msgId, data: {trade}});
+    });
+  });
 });
 
 function setTrade(data) {
@@ -32,24 +39,27 @@ function setTrade(data) {
       priceStepCost: symbolData.priceStepCost,
       go: symbolData.go
     }, options).then(symbol => {
-      if (!data._id) {
+      // if (data.hasOwnProperty('id')) delete data.id;
+      if (!data._id || data._id === 'new') {
         data._id = new mongoose.mongo.ObjectID();
       }
-      console.log(data._id);
-      Trade.findOneAndUpdate({_id: data._id},{
-        _id: data._id,
-        amount: data.amount,
-        type: data.type,
-        priceOpen: data.priceOpen,
-        timeOpen: data.timeOpen,
-        priceClose: data.priceClose,
-        timeClose: data.timeClose,
-        stopLoss: data.stopLoss,
-        volume: data.volume,
-        stopLossVolume: data.stopLossVolume,
-        profit: data.profit,
-        symbol: symbol._id
-      }, options).then(trade => resolve(trade)).catch(err => reject(err));
+      Trade.findById(data._id).then(trade => {
+        if (!trade) trade = new Trade();
+
+        trade.amount = data.amount;
+        trade.type = data.type;
+        trade.priceOpen = data.priceOpen;
+        trade.timeOpen = data.timeOpen;
+        trade.priceClose = data.priceClose;
+        trade.timeClose = data.timeClose;
+        trade.stopLoss = data.stopLoss;
+        trade.volume = data.volume;
+        trade.stopLossVolume = data.stopLossVolume;
+        trade.profit = data.profit;
+        trade.symbol = symbol._id;
+
+        trade.save().then(trade => resolve(trade)).catch(err => reject(err));
+      });
     });
   });
 }
@@ -124,12 +134,12 @@ function getOpenStopLossVolume() {
 
 // setTrade({
 //   symbol: {
-//     symbol: 'SIM8',
+//     symbol: 'SIM85665436',
 //     priceStep: 0.2,
 //     priceStepCost: 3,
 //     go: 4000
 //   },
-//   amount: 10,
+//   amount: 1000,
 //   type: 'SELL',
 //   priceOpen: 206.58,
 //   timeOpen: new Date(),

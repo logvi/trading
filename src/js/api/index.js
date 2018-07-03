@@ -8,6 +8,14 @@ class Api extends Server {
       });
     });
   };
+
+  setTrade = (params = {}) => {
+    return new Promise((resolve, reject) => {
+      this.send('setTrade', params, response => {
+        resolve(response.trade);
+      });
+    });
+  };
 }
 
 export default new Api();
