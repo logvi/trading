@@ -17,9 +17,11 @@ class TradeDialog extends Component {
   }
 
   onSave = () => {
-    this.props.trade.save().then(() => {
-      this.props.trades.getData();
-    });
+    if (confirm('Do you really want to save the trade ' + this.props.trade.data.id)) {
+      this.props.trade.save().then(() => {
+        this.props.trades.getData();
+      });
+    }
   };
 
   handleClose = () => {
@@ -29,6 +31,14 @@ class TradeDialog extends Component {
   onFieldChange = ({target}) => {
     const {value, name} = target;
     this.props.trade.setValue(name, value);
+  };
+
+  onDelete = () => {
+    if (confirm('Do you really want to delete the trade ' + this.props.trade.data.id)) {
+      this.props.trade.remove().then(() => {
+        this.props.trades.getData();
+      });
+    }
   };
 
   render() {
@@ -185,6 +195,11 @@ class TradeDialog extends Component {
           </div>
         </DialogContent>
         <DialogActions>
+          {_id !== 'new' ?
+            <Button onClick={this.onDelete} color="primary">
+              Delete
+            </Button>
+          : null}
           <Button onClick={this.onSave} color="primary">
             Save
           </Button>

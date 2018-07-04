@@ -11,5 +11,8 @@
 9. (+) Client: get trades
 10.(+) Client: routing
 11.(+) Client: open existing trade
-12. Client: Sace trade
-13. Client and Server: remove trade
+12.(+) Client: Set trade
+13.(+) Client and Server: remove trade
+14. Client: get totals
+15. Client: styling table
+16: Client: refresh button

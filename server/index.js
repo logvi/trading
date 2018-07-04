@@ -27,6 +27,13 @@ io.on('connection', socket => {
       socket.emit('setTrade', {msgId: request.msgId, data: {trade}});
     });
   });
+
+  socket.on('deleteTrade', request => {
+    console.log('deleteTrade', request);
+    deleteTrade(request.data._id).then(trade => {
+      socket.emit('deleteTrade', {msgId: request.msgId, data: {trade}});
+    });
+  });
 });
 
 function setTrade(data) {
@@ -68,6 +75,10 @@ function getTrades(params = {}) {
   const {filter = {}} = params;
   if (filter._id) return Trade.findById(filter._id).populate('symbol');
   return Trade.find(filter).populate('symbol').sort({timeOpen: -1});
+}
+
+function deleteTrade(_id) {
+  return Trade.findByIdAndDelete(_id);
 }
 
 function getTradesCount() {

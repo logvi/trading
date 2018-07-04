@@ -78,7 +78,22 @@ class TradeStore {
   @action save = () => {
     return new Promise((resolve, reject) => {
       api.setTrade(this.data).then(trade => {
+        this.clear();
         resolve(trade);
+      });
+    });
+  };
+
+  @action clear = () => {
+    this.data = null;
+  };
+
+  @action remove = () => {
+    if (!this.data) return;
+    return new Promise((resolve, reject) => {
+      api.deleteTrade(this.data._id).then(() => {
+        this.clear();
+        resolve(true);
       });
     });
   };

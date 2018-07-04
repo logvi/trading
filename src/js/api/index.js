@@ -16,6 +16,14 @@ class Api extends Server {
       });
     });
   };
+
+  deleteTrade = (_id) => {
+    return new Promise((resolve, reject) => {
+      this.send('deleteTrade', {_id}, response => {
+        resolve(response);
+      });
+    });
+  };
 }
 
 export default new Api();
