@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
+import {inject, observer} from 'mobx-react';
 
-class TradesStatistics extends Component {
+@inject('trades')
+@observer
+class TradesTotals extends Component {
   render() {
+    const totals = this.props.trades.totals;
+    // const {} = totals;
     return (
-      <div className="trades-statistics">
+      <div className="trades-totals">
         <div>
           <div>Closed Trades: 3</div>
           <div>Profit: 300</div>
@@ -19,4 +24,4 @@ class TradesStatistics extends Component {
   }
 }
 
-export default TradesStatistics;
+export default TradesTotals;

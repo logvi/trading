@@ -1,10 +1,12 @@
 import {observable, action} from 'mobx';
 import api from '../api';
+import TradesTotalsStore from './TradesTotalsStore';
 
 class TradesStore {
   @observable data = [];
   @observable isLoading = false;
   @observable orderBy = {};
+  totals = new TradesTotalsStore();
 
   @action setOrderBy = (value) => {
     this.orderBy = value;
@@ -16,6 +18,7 @@ class TradesStore {
       this.setData(data);
       this.setLoading(false);
     });
+    this.totals.getData();
   }
 
   @action setData(data) {

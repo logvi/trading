@@ -24,6 +24,14 @@ class Api extends Server {
       });
     });
   };
+
+  getTotals = () => {
+    return new Promise((resolve, reject) => {
+      this.send('getTotals', {}, response => {
+        resolve(response);
+      });
+    });
+  };
 }
 
 export default new Api();

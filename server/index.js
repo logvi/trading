@@ -4,6 +4,7 @@ const io = require('socket.io')();
 require('./db');
 const Trade = require('./Trade');
 const Symbol = require('./Symbol');
+const utils = require('./utils');
 
 const server = http.createServer((req, res) => {}).listen(3000, () => {
   console.log('server is running on 3000');
@@ -33,6 +34,44 @@ io.on('connection', socket => {
     deleteTrade(request.data._id).then(trade => {
       socket.emit('deleteTrade', {msgId: request.msgId, data: {trade}});
     });
+  });
+
+  socket.on('getTotals', request => {
+    console.log('getTotals', request);
+    let dateFilterToday = utils.getDateFilter('today'),
+        dateFilterThisMonth = utils.getDateFilter('thisMonth'),
+        dateFilterLastMonth = utils.getDateFilter('lastMonth');
+
+    Promise.all([
+      getOpenTradesCount(),
+      getClosedTradesCount(),
+      getOpenVolume(),
+      getOpenStopLossVolume(),
+      getTotalProfit(), //all
+      getTotalProfit(dateFilterToday), //today
+      getTotalProfit(dateFilterThisMonth), //this month
+      getTotalProfit(dateFilterLastMonth), //last month
+    ]).then(([
+      openTradesCount,
+      closedTradesCount,
+      openVolume,
+      openStopLossVolume,
+      profit,
+      profitToday,
+      profitThisMonth,
+      profitLastMonth
+    ]) => {
+      socket.emit('getTotals', {msgId: request.msgId, data: {
+        openTradesCount,
+        closedTradesCount,
+        openVolume,
+        openStopLossVolume,
+        profit,
+        profitToday,
+        profitThisMonth,
+        profitLastMonth
+      }});
+    })
   });
 });
 
@@ -93,11 +132,11 @@ function getClosedTradesCount() {
   return Trade.count(({timeClose: {$ne: null}}));
 }
 
-function getTotalProfit(filter) {
+function getTotalProfit({dateFrom, dateTo} = {}) {
   let actions = [];
-  if (filter) {
+  if (dateFrom) {
     actions.push({
-      $match: filter
+      $match: {timeClose: {$gt: new Date(dateFrom), $lt: new Date(dateTo)}}
     });
   }
 
@@ -107,40 +146,63 @@ function getTotalProfit(filter) {
       total: {$sum: '$profit'}
     }
   });
-
-  return Trade.aggregate(actions);
+  return new Promise((resolve, reject) => {
+    Trade.aggregate(actions).then(data => {
+      if (data.length) {
+        resolve(data[0].total)
+      } else {
+        resolve(0);
+      }
+    });
+  });
 }
 
 function getOpenVolume() {
-  return Trade.aggregate([
-    {
-      $match: {
-        timeClose: null
+  return new Promise((resolve, reject) => {
+    Trade.aggregate([
+      {
+        $match: {
+          timeClose: null
+        },
       },
-    },
-    {
-      $group: {
-        _id: null,
-        total: {$sum: '$volume'}
+      {
+        $group: {
+          _id: null,
+          total: {$sum: '$volume'}
+        }
       }
-    }
-  ]);
+    ]).then(data => {
+      if (data.length) {
+        resolve(data[0].total)
+      } else {
+        resolve(0);
+      }
+    });
+  });
 }
 
 function getOpenStopLossVolume() {
-  return Trade.aggregate([
-    {
-      $match: {
-        timeClose: null
+  return new Promise((resolve, reject) => {
+    Trade.aggregate([
+      {
+        $match: {
+          timeClose: null
+        },
       },
-    },
-    {
-      $group: {
-        _id: null,
-        total: {$sum: '$stopLossVolume'}
+      {
+        $group: {
+          _id: null,
+          total: {$sum: '$stopLossVolume'}
+        }
       }
-    }
-  ]);
+    ]).then(data => {
+      if (data.length) {
+        resolve(data[0].total)
+      } else {
+        resolve(0);
+      }
+    });
+  });
 }
 
 // setTrade({
@@ -167,3 +229,8 @@ function getOpenStopLossVolume() {
 // let d = new Date();
 // d.setMonth(d.getMonth() - 1);
 // getTotalProfit({timeClose: {$lte: d}}).then(res => console.log(res));
+
+// getTotalProfit().then(res => console.log('total', res));
+// getTotalProfit(utils.getDateFilter('today')).then(response => console.log('today', response));
+// getTotalProfit(utils.getDateFilter('lastMonth')).then(response => console.log('lastMonth', response));
+// getOpenTradesCount().then(res => console.log(res));
