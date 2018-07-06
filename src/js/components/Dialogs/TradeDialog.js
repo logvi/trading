@@ -19,7 +19,7 @@ class TradeDialog extends Component {
   onSave = () => {
     if (confirm('Do you really want to save the trade ' + this.props.trade.data.id)) {
       this.props.trade.save().then(() => {
-        this.props.trades.getData();
+        this.props.trades.refresh();
       });
     }
   };

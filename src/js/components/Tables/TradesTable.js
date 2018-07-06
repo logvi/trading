@@ -47,13 +47,18 @@ const COLUMNS = [
     sortable: true
   }),
   new Column({
-    name: 'sl',
+    name: 'stopLoss',
     title: 'SL',
     sortable: true
   }),
   new Column({
-    name: 'tp',
-    title: 'TP',
+    name: 'volume',
+    title: 'Volume',
+    sortable: true
+  }),
+  new Column({
+    name: 'stopLossVolume',
+    title: 'SL Volume',
     sortable: true
   }),
   new Column({

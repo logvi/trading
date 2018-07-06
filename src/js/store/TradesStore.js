@@ -13,12 +13,22 @@ class TradesStore {
   };
 
   @action getData() {
+    return new Promise((resolve, reject) => {
+      api.getTrades().then(data => {
+        this.setData(data);
+        resolve(true);
+      });
+    });
+  }
+
+  @action refresh() {
     this.setLoading(true);
-    api.getTrades().then(data => {
-      this.setData(data);
+    Promise.all([
+      this.getData(),
+      this.totals.getData()
+    ]).then(() => {
       this.setLoading(false);
     });
-    this.totals.getData();
   }
 
   @action setData(data) {

@@ -6,18 +6,20 @@ import {inject, observer} from 'mobx-react';
 class TradesTotals extends Component {
   render() {
     const totals = this.props.trades.totals;
-    // const {} = totals;
+    const {closedTradesNumber, openTradesNumber, profit, profitToday, profitThisMonth, profitLastMonth, openVolume, openStopLossVolume} = totals;
     return (
       <div className="trades-totals">
         <div>
-          <div>Closed Trades: 3</div>
-          <div>Profit: 300</div>
-          <div>Profit for: 500</div>
+          <div>Closed Trades: {closedTradesNumber}</div>
+          <div>Profit: {profit}</div>
+          <div>Last month: {profitLastMonth}</div>
+          <div>This month: {profitThisMonth}</div>
+          <div>Today: {profitToday}</div>
         </div>
         <div>
-          <div>Open Trades: 3</div>
-          <div>Volume: 300</div>
-          <div>Stop Loss Volume: 500</div>
+          <div>Open Trades: {openTradesNumber}</div>
+          <div>Volume: {openVolume}</div>
+          <div>Stop Loss Volume: {openStopLossVolume}</div>
         </div>
       </div>
     )

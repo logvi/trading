@@ -18,7 +18,7 @@ class Store {
   @action openView = view => {
     switch(view) {
       case 'home':
-        this.trades.getData();
+        this.trades.refresh();
         break;
     }
   };
