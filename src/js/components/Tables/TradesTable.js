@@ -5,6 +5,7 @@ import {inject} from 'mobx-react';
 import DataTable from '../DataTable';
 import Column from '../DataTable/models/Column';
 import DateTimeColumn from './TableColumns/DateTimeColumn';
+import ProfitColumn from './TableColumns/ProfitColumn';
 
 const COLUMNS = [
   new Column({
@@ -75,7 +76,10 @@ const COLUMNS = [
   new Column({
     name: 'profit',
     title: 'Profit',
-    sortable: true
+    sortable: true,
+    renderer: (column, row) => {
+      return <ProfitColumn column={column} row={row} />
+    }
   }),
 ];
 
@@ -112,7 +116,6 @@ class TradesTable extends React.Component {
         loading={isLoading}
         onAction={this.onTableAction}
         orderBy={orderBy}
-        stripped
         showRowHover
       />
     );

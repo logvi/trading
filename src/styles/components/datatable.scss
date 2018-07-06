@@ -49,9 +49,9 @@
 
     .table-cell-content {
       border-left: 1px solid #d4d4d4;
+      border-bottom: 1px solid #d4d4d4;
       overflow: hidden;
       border-top: none;
-      border-bottom: none;
       box-sizing: border-box;
 
       &:first-child {
@@ -160,7 +160,6 @@
       background-color: #fff;
       font-size: 0.8rem;
       white-space: nowrap;
-      border-bottom: 1px solid #d4d4d4;
 
       .table-cell-content-inner {
         box-sizing: border-box;
@@ -250,6 +249,14 @@
   justify-content: space-between;
   padding: 0 20px;
   min-height: 35px;
+}
+
+.tr-profit {
+  background-color: #47ff4b;
+}
+
+.tr-loss {
+  background-color: #ffa0a0;
 }
 
 // tr hover style cross-browser

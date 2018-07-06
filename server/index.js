@@ -233,4 +233,5 @@ function getOpenStopLossVolume() {
 // getTotalProfit().then(res => console.log('total', res));
 // getTotalProfit(utils.getDateFilter('today')).then(response => console.log('today', response));
 // getTotalProfit(utils.getDateFilter('lastMonth')).then(response => console.log('lastMonth', response));
+// getTotalProfit(utils.getDateFilter('thisMonth')).then(response => console.log('thisMonth', response));
 // getOpenTradesCount().then(res => console.log(res));

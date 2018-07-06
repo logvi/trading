@@ -9,7 +9,7 @@ function getDateFilter(param) {
       break;
     case 'thisMonth':
       dateFrom = new Date(now.getFullYear(), now.getMonth(), 1).toJSON().split('T')[0]+'T00:00:00';
-      dateTo = now;
+      dateTo = now.toJSON().split('T')[0]+'T23:59:59';
       break;
     case 'lastMonth':
       dateFrom = new Date(now.getFullYear(), now.getMonth() - 1, 1).toJSON().split('T')[0]+'T00:00:00';
