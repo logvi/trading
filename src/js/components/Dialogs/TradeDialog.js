@@ -36,7 +36,7 @@ class TradeDialog extends Component {
   onDelete = () => {
     if (confirm('Do you really want to delete the trade ' + this.props.trade.data.id)) {
       this.props.trade.remove().then(() => {
-        this.props.trades.getData();
+        this.props.trades.refresh();
       });
     }
   };

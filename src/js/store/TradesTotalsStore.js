@@ -14,7 +14,6 @@ class TradesTotalsStore {
   @action getData = () => {
     return new Promise((resolve, reject) => {
       api.getTotals().then(data => {
-        console.log(data);
         this.closedTradesNumber = data.closedTradesCount;
         this.openTradesNumber = data.openTradesCount;
         this.profit = data.profit;
