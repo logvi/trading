@@ -9,11 +9,13 @@ let config = {
 const secure = location.protocol == 'https:';
 
 class Server {
+  socket = null;
+  sockmsg = [];
+  methodListeners = {};
+  messagesQueue = [];
+  msgListeners = {};
+
   constructor({token} = {}) {
-    this.socket = null;
-    this.sockmsg = [];
-    this.methodListeners = {};
-    this.messagesQueue = [];
     this.token = token;
   }
 
@@ -83,7 +85,11 @@ class Server {
 
   on(event, callback) {
     if (!this.socket) {
-      console.error('server is not connected yet');
+      if (!this.msgListeners[event]) {
+        this.msgListeners[event] = [callback];
+      } else {
+        this.msgListeners[event].push(callback);
+      }
       return;
     }
     if (event === 'connect') {
@@ -109,6 +115,11 @@ class Server {
 
   onConnect() {
     this.messagesQueue.forEach(data => this.socket.send(data.type, data.msg));
+    Object.keys(this.msgListeners).forEach(event => {
+      this.msgListeners[event].map(callback => {
+        this.socket.on(event, data => callback(data))
+      });
+    });
   }
 
   disconnect() {
@@ -146,12 +157,6 @@ class Server {
     else {
       this.methodListeners[type][msg.msgId] = fn;
     }
-  }
-
-  listen = (event, callback) => {
-    this.socket.on(event, data => {
-      callback(data);
-    });
   }
 }
 

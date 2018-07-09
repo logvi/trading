@@ -19,7 +19,7 @@ class TradeDialog extends Component {
   onSave = () => {
     if (confirm('Do you really want to save the trade ' + this.props.trade.data.id)) {
       this.props.trade.save().then(() => {
-        this.props.trades.refresh();
+        this.props.trades.getData();
       });
     }
   };
@@ -36,7 +36,7 @@ class TradeDialog extends Component {
   onDelete = () => {
     if (confirm('Do you really want to delete the trade ' + this.props.trade.data.id)) {
       this.props.trade.remove().then(() => {
-        this.props.trades.refresh();
+        this.props.trades.getData();
       });
     }
   };

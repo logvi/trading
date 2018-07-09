@@ -11,19 +11,26 @@ class TradesTotalsStore {
   @observable openVolume = 0;
   @observable openStopLossVolume = 0;
 
+  constructor() {
+    api.onTotals(data => {
+      this.setData(data);
+    });
+  }
+
+  @action setData(data) {
+    this.closedTradesNumber = data.closedTradesCount;
+    this.openTradesNumber = data.openTradesCount;
+    this.profit = data.profit;
+    this.profitToday = data.profitToday;
+    this.profitThisMonth = data.profitThisMonth;
+    this.profitLastMonth = data.profitLastMonth;
+    this.openVolume = data.openVolume;
+    this.openStopLossVolume = data.openStopLossVolume;
+  }
+
   @action getData = () => {
     return new Promise((resolve, reject) => {
-      api.getTotals().then(data => {
-        this.closedTradesNumber = data.closedTradesCount;
-        this.openTradesNumber = data.openTradesCount;
-        this.profit = data.profit;
-        this.profitToday = data.profitToday;
-        this.profitThisMonth = data.profitThisMonth;
-        this.profitLastMonth = data.profitLastMonth;
-        this.openVolume = data.openVolume;
-        this.openStopLossVolume = data.openStopLossVolume;
-        resolve(true);
-      });
+      api.getTotals().then((data) => resolve(data));
     });
   };
 }

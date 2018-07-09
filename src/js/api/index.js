@@ -32,6 +32,12 @@ class Api extends Server {
       });
     });
   };
+
+  onTotals = callback => {
+    this.on('getTotals', response => {
+      callback(response.data)
+    });
+  };
 }
 
 export default new Api();
