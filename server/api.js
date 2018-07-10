@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const utils = require('./utils');
 const Trade = require('./Trade');
 const Symbol = require('./Symbol');
-// const telegramBot = require('./telegram');
+const telegramBot = require('./telegram');
 
 function startApi(socket) {
   socket.on('getTrades', request => {
@@ -184,24 +184,24 @@ function getTotals() {
       getTotalProfit(dateFilterThisMonth), //this month
       getTotalProfit(dateFilterLastMonth), //last month
     ]).then(([
-               openTradesCount,
-               closedTradesCount,
-               openVolume,
-               openStopLossVolume,
-               profit,
-               profitToday,
-               profitThisMonth,
-               profitLastMonth
-             ]) => {
+      openTradesCount,
+      closedTradesCount,
+      openVolume,
+      openStopLossVolume,
+      profit,
+      profitToday,
+      profitThisMonth,
+      profitLastMonth
+    ]) => {
       resolve({
-          openTradesCount,
-          closedTradesCount,
-          openVolume,
-          openStopLossVolume,
-          profit,
-          profitToday,
-          profitThisMonth,
-          profitLastMonth
+        openTradesCount,
+        closedTradesCount,
+        openVolume,
+        openStopLossVolume,
+        profit,
+        profitToday,
+        profitThisMonth,
+        profitLastMonth
       });
     });
   });
