@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
-import {toDatetimeLocal} from '../../utils/formatDate';
+import {toDatetimeLocal} from '../../utils/dateUtils';
 
 @inject('trade', 'trades')
 @observer
