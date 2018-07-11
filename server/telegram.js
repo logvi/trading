@@ -29,20 +29,24 @@ bot.getChat(config.TELEGRAM_CHANEL).then(chat => {
   // })
 });
 
+bot.sendTotalMessage = sendTotalMessage;
+bot.sendTradeMessage = sendTradeMessage;
+
 function sendTradeMessage(tradeData) {
+  if (!tradeData.amount) return;
   let msg = [];
   msg.push(tradeData.profit ? '#close' : '#open');
   msg.push(`#trade${tradeData.id}`);
   msg.push(tradeData.type === 'BUY' ? 'ПОКУПКА' : 'ПРОДАЖА');
-  if (tradeData.timeOpen) msg.push(`Время открытия: ${tradeData.timeOpen}`);
-  if (tradeData.symbol.symbol) msg.push(`Инструмент: ${tradeData.symbol.symbol}`);
-  if (tradeData.priceOpen) msg.push(`Цена открытия: ${tradeData.priceOpen}`);
-  if (tradeData.amount) msg.push(`Количество: ${tradeData.amount}`);
-  if (tradeData.volume) msg.push(`Объём сделки: ${tradeData.volume}`);
-  if (tradeData.stopLoss) msg.push(`Стоп лосс: ${tradeData.stopLoss}`);
-  if (tradeData.timeClose) msg.push(`Время закрытия: ${tradeData.timeClose}`);
-  if (tradeData.priceClose) msg.push(`Цена закрытия: ${tradeData.priceClose}`);
-  if (tradeData.profit) msg.push(`Профит: ${tradeData.profit}`);
+  if (tradeData.timeOpen) msg.push(`Время открытия: <b>${tradeData.timeOpen.toLocaleString('ru-Ru')}</b>`);
+  if (tradeData.symbol.symbol) msg.push(`Инструмент: <b>${tradeData.symbol.symbol}</b>`);
+  if (tradeData.priceOpen) msg.push(`Цена открытия: <b>${tradeData.priceOpen}</b>`);
+  if (tradeData.amount) msg.push(`Количество: <b>${tradeData.amount}</b>`);
+  if (tradeData.volume) msg.push(`Объём сделки: <b>${tradeData.volume}</b>`);
+  if (tradeData.stopLoss) msg.push(`Стоп лосс: <b>${tradeData.stopLoss}</b>`);
+  if (tradeData.timeClose) msg.push(`Время закрытия: <b>${tradeData.timeClose.toLocaleString('ru-Ru')}</b>`);
+  if (tradeData.priceClose) msg.push(`Цена закрытия: <b>${tradeData.priceClose}</b>`);
+  if (tradeData.profit) msg.push(`Профит: <b>${tradeData.profit}</b>`);
   bot.sendMessage(chatId, msg.join('\n'), {parse_mode: 'HTML'});
 }
 

@@ -8,12 +8,21 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
+import {toDatetimeLocal} from '../../utils/formatDate';
 
 @inject('trade', 'trades')
 @observer
 class TradeDialog extends Component {
   get isOpen() {
     return Boolean(!!this.props.trade.data && this.props.trade.data._id);
+  }
+
+  get timeOpen() {
+    return toDatetimeLocal(this.props.trade.data.timeOpen);
+  }
+
+  get timeClose() {
+    return toDatetimeLocal(this.props.trade.data.timeClose);
   }
 
   onSave = () => {
@@ -132,8 +141,11 @@ class TradeDialog extends Component {
                 <TextField
                   type="datetime-local"
                   label="Open Time"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   inputProps={{name: 'timeOpen'}}
-                  value={timeOpen}
+                  value={this.timeOpen}
                   onChange={this.onFieldChange}
                 />
               </div>
@@ -158,7 +170,10 @@ class TradeDialog extends Component {
               <div>
                 <TextField
                   type="datetime-local"
-                  value={timeClose}
+                  value={this.timeClose}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   inputProps={{name: 'timeClose'}}
                   label="Close Time"
                   onChange={this.onFieldChange}

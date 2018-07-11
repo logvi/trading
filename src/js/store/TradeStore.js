@@ -52,7 +52,7 @@ class TradeStore {
     priceOpen: 0,
     timeOpen: new Date(),
     priceClose: 0,
-    timeClose: new Date().toJSON().split('.')[0],
+    timeClose: '',
     stopLoss: 0,
     volume: 0,
     stopLossVolume: 0,
@@ -64,8 +64,8 @@ class TradeStore {
       go: ''
     }
   }) => {
-    data.timeOpen = new Date(data.timeOpen).toJSON().split('.')[0];
-    data.timeClose = new Date(data.timeClose).toJSON().split('.')[0];
+    data.timeOpen = data.timeOpen ? new Date(data.timeOpen) : '';
+    data.timeClose = data.timeClose ? new Date(data.timeClose) : '';
     this.data = data;
   };
 

@@ -16,10 +16,15 @@ function startApi(socket) {
   socket.on('setTrade', request => {
     console.log('setTrade', request);
     setTrade(request.data).then(trade => {
-      socket.emit('setTrade', {msgId: request.msgId, data: {trade}});
-    });
-    getTotals().then(totalsData => {
-      socket.emit('getTotals', {msgId: request.msgId, data: totalsData});
+      Trade.populate(trade, {path: 'symbol'}).then(trade => {
+        socket.emit('setTrade', {msgId: request.msgId, data: {trade}});
+        telegramBot.sendTradeMessage(trade);
+
+        getTotals().then(totalData => {
+          socket.emit('getTotals', {msgId: request.msgId, data: totalData});
+          telegramBot.sendTotalMessage(totalData);
+        });
+      });
     });
   });
 
