@@ -41,6 +41,13 @@ function startApi(socket) {
       socket.emit('getTotals', {msgId: request.msgId, data: totalsData});
     });
   });
+
+  socket.on('getSymbols', request => {
+    console.log('getSymbols', request);
+    getSymbols().then(symbols => {
+      socket.emit('getSymbols', {msgId: request.msgId, data: symbols});
+    });
+  });
 }
 
 function setTrade(data) {
@@ -210,6 +217,10 @@ function getTotals() {
       });
     });
   });
+}
+
+function getSymbols() {
+  return Symbol.find({});
 }
 
 // setTrade({

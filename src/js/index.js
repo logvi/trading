@@ -11,7 +11,7 @@ const store = new Store();
 setLoading(false);
 ReactDOM.render((
   <MuiThemeProvider theme={theme}>
-    <Provider trades={store.trades} modal={store.modal} trade={store.trade}>
+    <Provider trades={store.trades} modal={store.modal} trade={store.trade} symbols={store.symbols}>
       <App />
     </Provider>
   </MuiThemeProvider>

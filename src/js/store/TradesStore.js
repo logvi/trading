@@ -8,14 +8,26 @@ class TradesStore {
   @observable orderBy = {};
   totals = new TradesTotalsStore();
 
+  constructor(rootStore) {
+    this.rootStore = rootStore;
+  }
+
   @action setOrderBy = (value) => {
     this.orderBy = value;
   };
 
   @action getData() {
+    this.setLoading(true);
     return new Promise((resolve, reject) => {
-      api.getTrades().then(data => {
-        this.setData(data);
+      Promise.all([
+        api.getTrades(),
+        this.rootStore.symbols.getData()
+      ]).then(([
+        trades,
+        symbols
+      ]) => {
+        this.setData(trades);
+        this.setLoading(false);
         resolve(true);
       });
     });

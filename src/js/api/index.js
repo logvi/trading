@@ -38,6 +38,14 @@ class Api extends Server {
       callback(response.data)
     });
   };
+
+  getSymbols = () => {
+    return new Promise((resolve, reject) => {
+      this.send('getSymbols', {}, response => {
+        resolve(response);
+      });
+    });
+  };
 }
 
 export default new Api();

@@ -49,6 +49,7 @@
     "mobx-react": "^5.2.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-select": "^1.2.1",
     "socket.io-client": "^2.1.1",
     "universal-router": "^6.0.0"
   }

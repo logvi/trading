@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import {toDatetimeLocal} from '../../utils/dateUtils';
+import SymbolAutocomplete from '../SymbolAutocomplete';
 
 @inject('trade', 'trades')
 @observer
@@ -35,6 +36,10 @@ class TradeDialog extends Component {
 
   handleClose = () => {
     this.props.trade.setValue('_id', null);
+  };
+
+  onSymbolChange = value => {
+    this.props.trade.setValue('symbol', value);
   };
 
   onFieldChange = ({target}) => {
@@ -70,11 +75,9 @@ class TradeDialog extends Component {
             <div>
               <Typography variant="subheading">Symbol</Typography>
               <div>
-                <TextField
-                  label="Symbol"
+                <SymbolAutocomplete
                   value={symbol}
-                  inputProps={{name: 'symbol'}}
-                  onChange={this.onFieldChange}
+                  onChange={this.onSymbolChange}
                 />
               </div>
               <div>
