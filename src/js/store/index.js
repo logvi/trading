@@ -9,7 +9,7 @@ class Store {
   trades = new TradesStore(this);
   modal = new ModalStore();
   router = new Router(this);
-  trade = new TradeStore();
+  trade = new TradeStore(this);
   symbols = new SymbolsStore();
 
   constructor() {

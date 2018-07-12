@@ -4,7 +4,9 @@ import api from '../api';
 class TradeStore {
   @observable data = null;
 
-  constructor() {
+  constructor(rootStore) {
+    this.rootStore = rootStore;
+
     autorun(() => this.calculateVolume());
     autorun(() => this.calculateStopLossVolume());
     autorun(() => this.calculateProfit());
@@ -12,6 +14,7 @@ class TradeStore {
 
   calculateVolume = () => {
     if (!this.data) return;
+    if (!this.data.symbol) return;
     const price = this.data.symbol.go || this.data.priceOpen;
     const volume = this.data.amount * price;
     this.setValue('volume', volume);
@@ -20,6 +23,7 @@ class TradeStore {
   calculateStopLossVolume = () => {
     if (!this.data) return;
     if (!this.data.stopLoss) return;
+    if (!this.data.symbol) return;
     const res = (Math.abs(this.data.priceOpen - this.data.stopLoss))/this.data.symbol.priceStep*this.data.symbol.priceStepCost*this.data.amount;
     this.setValue('stopLossVolume', res);
   };
@@ -27,6 +31,7 @@ class TradeStore {
   calculateProfit = () => {
     if (!this.data) return;
     if (!this.data.priceClose) return;
+    if (!this.data.symbol) return;
     const koef = this.data.type === 'BUY' ? -1 : 1;
     const res = (this.data.priceOpen - this.data.priceClose)/this.data.symbol.priceStep*this.data.symbol.priceStepCost*this.data.amount*koef;
     this.setValue('profit', res);
@@ -41,6 +46,16 @@ class TradeStore {
 
   @action setSymbol = (field, value) => {
     if (!this.data.symbol.hasOwnProperty(field)) return;
+    if (field === 'symbol') {
+      const foundSymbol = this.rootStore.symbols.data.find(({symbol}) => symbol === value);
+      if (foundSymbol) {
+        this.data.symbol.symbol = foundSymbol.symbol;
+        this.data.symbol.priceStep = foundSymbol.priceStep;
+        this.data.symbol.priceStepCost = foundSymbol.priceStepCost;
+        this.data.symbol.go = foundSymbol.go;
+        return;
+      }
+    }
     this.data.symbol[field] = value;
   };
 
@@ -79,6 +94,7 @@ class TradeStore {
     return new Promise((resolve, reject) => {
       api.setTrade(this.data).then(trade => {
         this.clear();
+        this.rootStore.trades.getData();
         resolve(trade);
       });
     });
@@ -93,6 +109,7 @@ class TradeStore {
     return new Promise((resolve, reject) => {
       api.deleteTrade(this.data._id).then(() => {
         this.clear();
+        this.rootStore.trades.getData();
         resolve(true);
       });
     });

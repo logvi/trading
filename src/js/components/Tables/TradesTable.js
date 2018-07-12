@@ -23,7 +23,7 @@ const COLUMNS = [
     title: 'Symbol',
     sortable: true,
     renderer: (column, row) => {
-      return row.symbol.symbol;
+      return row.symbol ? row.symbol.symbol : '';
     }
   }),
   new Column({

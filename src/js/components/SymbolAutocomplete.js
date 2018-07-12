@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {inject} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
@@ -41,13 +41,14 @@ function SelectWrapped(props) {
   const { classes, ...other } = props;
 
   return (
-    <Select
+    <Select.Creatable
       optionComponent={Option}
       noResultsText={<Typography>{'No results found'}</Typography>}
       arrowRenderer={arrowProps => {
         return arrowProps.isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
       }}
       clearRenderer={() => <ClearIcon />}
+      showNewOptionAtTop={true}
       valueComponent={valueProps => {
         const { value, children, onRemove } = valueProps;
 
@@ -184,13 +185,21 @@ const styles = theme => ({
 });
 
 @inject('symbols')
+@observer
 class IntegrationReactSelect extends React.Component {
-  render() {
-    const { classes } = this.props;
-    const suggestions = this.props.symbols.data.map(symbol => ({
+  componentWillMount() {
+    this.setOptions();
+  }
+
+  setOptions = () => {
+    this.suggestions = this.props.symbols.data.map(symbol => ({
       value: symbol.symbol,
       label: symbol.symbol,
     }));
+  };
+
+  render() {
+    const { classes } = this.props;
 
     return (
       <Input
@@ -205,7 +214,7 @@ class IntegrationReactSelect extends React.Component {
           name: 'symbol',
           instanceId: 'react-select-single',
           simpleValue: true,
-          options: suggestions,
+          options: this.suggestions,
         }}
       />
     );
