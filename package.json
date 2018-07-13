@@ -44,6 +44,7 @@
   "dependencies": {
     "@material-ui/core": "^1.2.3",
     "@material-ui/icons": "^1.1.0",
+    "classnames": "^2.2.6",
     "history": "^4.7.2",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",

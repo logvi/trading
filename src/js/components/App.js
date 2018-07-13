@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import TradesCard from './TradesCard';
+import Loader from './Loader';
 import TradeDialog from './Dialogs/TradeDialog';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <TradesCard />
       </div>
       <TradeDialog />
+      <Loader/>
     </div>
   )
 }

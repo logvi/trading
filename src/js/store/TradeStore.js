@@ -85,8 +85,10 @@ class TradeStore {
   };
 
   @action getTrade = _id => {
+    this.rootStore.loader.setVisible(true);
     api.getTrades({filter: {_id}}).then(trade => {
       this.setData(trade);
+      this.rootStore.loader.setVisible(false);
     });
   };
 
