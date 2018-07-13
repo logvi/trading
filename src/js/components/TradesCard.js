@@ -25,7 +25,7 @@ class TradesCard extends Component {
           <div>
             <TradesStatistics/>
           </div>
-          <div>
+          <div className="trades-card-content__table">
             <TradesTable />
           </div>
         </CardContent>
