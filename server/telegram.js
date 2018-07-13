@@ -52,9 +52,12 @@ function sendTradeMessage(tradeData) {
 
 function sendTotalMessage(totalData) {
   bot.sendMessage(chatId, `ИТОГ
-Открыто трейдов: <b>${totalData.openTradesCount}</b> общим объёмом <b>${totalData.openVolume}</b>
-Общий профит: <b>${totalData.profit}</b>, за прошлый месяц: <b>${totalData.profitLastMonth}</b>
-Профит за сегодня: <b>${totalData.profitToday}</b>, за текущий месяц: <b>${totalData.profitThisMonth}</b>`, {
+Открыто трейдов: <b>${totalData.openTradesCount}</b> 
+общим объёмом <b>${totalData.openVolume}</b>
+Общий профит: <b>${totalData.profit}</b>, 
+за прошлый месяц: <b>${totalData.profitLastMonth}</b>
+за текущий месяц: <b>${totalData.profitThisMonth}</b>
+за сегодня: <b>${totalData.profitToday}</b>`, {
     parse_mode: 'HTML'
   });
 }

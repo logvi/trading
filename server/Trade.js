@@ -15,7 +15,7 @@ const tradeSchema = mongoose.Schema({
   volume: Number,
   stopLossVolume: Number,
   profit: Number,
-  symbol: {type: mongoose.Schema.Types.ObjectId, ref: 'Symbol'}
+  symbol: {type: mongoose.Schema.Types.ObjectId, ref: 'Symbol', required: true}
 });
 
 tradeSchema.plugin(autoIncrement.plugin, {model: 'Trade', field: 'id'});

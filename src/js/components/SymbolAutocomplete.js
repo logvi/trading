@@ -214,7 +214,7 @@ class IntegrationReactSelect extends React.Component {
           name: 'symbol',
           instanceId: 'react-select-single',
           simpleValue: true,
-          options: this.suggestions,
+          options: this.suggestions
         }}
       />
     );
