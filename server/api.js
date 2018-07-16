@@ -3,9 +3,30 @@ const mongoose = require('mongoose');
 const utils = require('./utils');
 const Trade = require('./Trade');
 const Symbol = require('./Symbol');
+const User = require('./User');
 const telegramBot = require('./telegram');
 
 function startApi(socket) {
+  socket.on('login', request => {
+    console.log('login', request);
+    User.findOne({username: request.data.username}).then(user => {
+      if (!user) {
+        socket.emit('alert', {msg: 'User ' + request.data.username + ' not found'});
+        return;
+      }
+      user.comparePassword(request.data.password, (err, isMatch) => {
+        console.log('compare pwd', isMatch);
+        if (isMatch) {
+          // do login
+        } else {
+          socket.emit('alert', {msg: 'Password does not match'});
+        }
+      });
+    }).catch((err) => {
+      console.log(err);
+    });
+  });
+
   socket.on('getTrades', request => {
     console.log('getTrades', request);
     getTrades(request.data).then(trades => {
@@ -48,6 +69,15 @@ function startApi(socket) {
       socket.emit('getSymbols', {msgId: request.msgId, data: symbols});
     });
   });
+}
+
+function addUser({username, password}) {
+  let user = new User({
+    username,
+    password
+  });
+
+  return user.save();
 }
 
 function setTrade(data) {

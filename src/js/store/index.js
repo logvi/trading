@@ -1,3 +1,5 @@
+import api from '../api';
+import setLoading from '../utils/setLoading';
 import TradesStore from './TradesStore';
 import ModalStore from './ModalStore';
 import TradeStore from './TradeStore';
@@ -18,7 +20,14 @@ class Store {
   view = new ViewStore();
 
   constructor() {
-    this.router.resolve(location);
+    if (!api.connected) {
+      setLoading('Connecting to server...');
+      api.connect();
+      api.on('connect', async() => {
+        setLoading(false);
+        this.router.resolve(location);
+      });
+    }
   }
 }
 

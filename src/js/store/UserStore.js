@@ -1,4 +1,5 @@
 import {observable, action, autorun} from 'mobx';
+import api from '../api';
 
 class UserStore {
   @observable username = '';

@@ -46,6 +46,14 @@ class Api extends Server {
       });
     });
   };
+
+  login = (params = {}) => {
+    return new Promise((resolve, reject) => {
+      this.send('login', params, response => {
+        resolve(response);
+      });
+    });
+  }
 }
 
 export default new Api();
