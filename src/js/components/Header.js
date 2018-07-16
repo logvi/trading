@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {observer} from 'mobx-react';
-import {MENU_ITEMS} from '../constants';
+import UserMenu from './UserMenu';
 // material
 import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
@@ -41,6 +41,7 @@ class HeaderBar extends React.Component {
           <Typography variant="title" color="inherit" className={classes.flex}>
             {title}
           </Typography>
+          <UserMenu />
         </Toolbar>
       </AppBar>
     )
