@@ -10,19 +10,25 @@ class Router {
       path: '',
       name: 'home',
       action: () => {
-        this.store.openView('home');
+        this.store.view.setView('admin');
         return false;
       }
     },
     {
-      path: '/trade/:id',
-      name: 'trade',
-      action: () => {}
+      path: '/login',
+      name: 'login',
+      action: () => {
+        this.store.view.setView('login');
+        return false;
+      }
     },
     {
       path: '(.*)',
       name: '404',
-      action: () => this.store.openView('404')
+      action: () => {
+        this.store.view.setView('404');
+        return false;
+      }
     }
   ];
 

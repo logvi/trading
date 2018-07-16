@@ -17,6 +17,7 @@ ReactDOM.render((
       trade={store.trade}
       symbols={store.symbols}
       loader={store.loader}
+      view={store.view}
     >
       <App />
     </Provider>

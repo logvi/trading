@@ -4,6 +4,7 @@ import ModalStore from './ModalStore';
 import TradeStore from './TradeStore';
 import SymbolsStore from './SymbolsStore';
 import LoaderStore from './LoaderStore';
+import ViewStore from './ViewStore';
 import Router from './Router';
 
 class Store {
@@ -13,18 +14,11 @@ class Store {
   router = new Router(this);
   trade = new TradeStore(this);
   symbols = new SymbolsStore();
+  view = new ViewStore();
 
   constructor() {
     this.router.resolve(location);
   }
-
-  @action openView = view => {
-    switch(view) {
-      case 'home':
-        this.trades.refresh();
-        break;
-    }
-  };
 }
 
 export default Store;

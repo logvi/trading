@@ -114,7 +114,7 @@ class Server {
   };
 
   onConnect() {
-    this.messagesQueue.forEach(data => this.socket.send(data.type, data.msg));
+    this.messagesQueue.forEach(data => this.send(data.type, data.msg));
     Object.keys(this.msgListeners).forEach(event => {
       this.msgListeners[event].map(callback => {
         this.socket.on(event, data => callback(data))

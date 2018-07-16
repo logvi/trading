@@ -67,6 +67,7 @@ class TradeDialog extends Component {
         <DialogTitle id="alert-dialog-slide-title">
           Trade {id || id === 0 ? id : ''}
         </DialogTitle>
+        <form>
         <DialogContent className="trade-dialog">
           <div className="trade-dialog__fields">
             <div>
@@ -215,13 +216,14 @@ class TradeDialog extends Component {
               Delete
             </Button>
           : null}
-          <Button onClick={this.onSave} color="primary">
+          <Button onClick={this.onSave} color="primary" submit>
             Save
           </Button>
           <Button onClick={this.handleClose} color="primary">
             Close
           </Button>
         </DialogActions>
+        </form>
       </Dialog>
     )
   }
