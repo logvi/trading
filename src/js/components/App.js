@@ -4,6 +4,7 @@ import AdminView from './Views/AdminView';
 import LoginView from "./Views/LoginView";
 
 function App({view}) {
+  console.log()
   switch (view.currentView) {
     case 'admin':
       return <AdminView />;

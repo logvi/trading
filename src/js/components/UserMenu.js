@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
+import {inject} from 'mobx-react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
+@inject('user')
 class UserMenu extends Component {
   state = {
     userMenuAnchorEl: null
   };
 
   logout = () => {
-    this.props.userStore.logout();
+    this.props.user.logout();
     this.closeUserMenu();
   };
 

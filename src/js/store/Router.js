@@ -8,7 +8,7 @@ class Router {
   routes = [
     {
       path: '',
-      name: 'home',
+      name: 'admin',
       action: () => {
         this.store.view.setView('admin');
         return false;
@@ -43,14 +43,23 @@ class Router {
     }
 
   resolve(location) {
-    if (!api.connected) {
-      setLoading('Connecting to server...');
-      api.connect();
-      api.on('connect', async() => {
+    // check login
+    if (location.pathname !== '/login') {
+      if (!this.store.user.loggedIn) {
+        this.history.replace('/login');
         setLoading(false);
-        this.resolve(location);
-      });
-      return;
+        return;
+      } else {
+        if (!api.connected) {
+          setLoading('Connecting to server...');
+          api.connect();
+          api.on('connect', async() => {
+            setLoading(false);
+            this.resolve(location);
+          });
+          return;
+        }
+      }
     }
     setLoading(false);
     this.router.resolve({pathname: location.pathname, ...location.state});

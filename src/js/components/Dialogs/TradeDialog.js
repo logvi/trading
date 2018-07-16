@@ -216,7 +216,7 @@ class TradeDialog extends Component {
               Delete
             </Button>
           : null}
-          <Button onClick={this.onSave} color="primary" submit>
+          <Button onClick={this.onSave} color="primary">
             Save
           </Button>
           <Button onClick={this.handleClose} color="primary">

@@ -1,0 +1,9 @@
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  > *:nth-child(n+2) {
+    margin-top: 10px;
+  }
+}

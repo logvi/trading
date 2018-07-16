@@ -1,10 +1,10 @@
-import {action} from 'mobx';
 import TradesStore from './TradesStore';
 import ModalStore from './ModalStore';
 import TradeStore from './TradeStore';
 import SymbolsStore from './SymbolsStore';
 import LoaderStore from './LoaderStore';
 import ViewStore from './ViewStore';
+import UserStore from './UserStore';
 import Router from './Router';
 
 class Store {
@@ -14,6 +14,7 @@ class Store {
   router = new Router(this);
   trade = new TradeStore(this);
   symbols = new SymbolsStore();
+  user = new UserStore(this);
   view = new ViewStore();
 
   constructor() {

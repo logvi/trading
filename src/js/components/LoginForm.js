@@ -1,8 +1,11 @@
 import React from 'react';
-
+import {inject, observer} from 'mobx-react';
 // material components
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
+@inject('user')
+@observer
 class LoginForm extends React.Component {
   login = () => {
     this.props.user.login();
@@ -24,19 +27,28 @@ class LoginForm extends React.Component {
       );
     }
     return (
-      <Button
-        onClick={this.login}
-        color="primary"
-        variant="raised"
-      >
-        Login
-      </Button>
+      <form>
+        <TextField
+          label="Username"
+        />
+        <TextField
+          label="Password"
+          type="password"
+        />
+        <Button
+          onClick={this.login}
+          color="primary"
+          variant="raised"
+        >
+          Login
+        </Button>
+      </form>
     );
   }
 
   render = () =>
     <div className="login-form" style={{marginTop: 20}}>
-      <div style={{marginTop: 20}}>
+      <div>
         {this.renderForm()}
       </div>
     </div>;

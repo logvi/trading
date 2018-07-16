@@ -18,6 +18,7 @@ ReactDOM.render((
       symbols={store.symbols}
       loader={store.loader}
       view={store.view}
+      user={store.user}
     >
       <App />
     </Provider>
