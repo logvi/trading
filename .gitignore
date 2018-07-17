@@ -8,3 +8,4 @@ package.json.sha1
 x.md
 start.sh
 server/package.json
+server/.env

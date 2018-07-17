@@ -2,7 +2,7 @@ const http = require('http');
 const io = require('socket.io')();
 const startApi = require('./api');
 const jwt = require('jsonwebtoken');
-import config from './config';
+const config = require('./config');
 
 const server = http.createServer((req, res) => {}).listen(3000, () => {
   console.log('server is running on 3000');

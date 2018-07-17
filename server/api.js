@@ -6,7 +6,7 @@ const Symbol = require('./Symbol');
 const User = require('./User');
 const telegramBot = require('./telegram');
 const jwt = require('jsonwebtoken');
-import config from './config';
+const config = require('./config');
 
 function startApi(socket) {
   socket.on('login', request => {
