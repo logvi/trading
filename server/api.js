@@ -5,21 +5,25 @@ const Trade = require('./Trade');
 const Symbol = require('./Symbol');
 const User = require('./User');
 const telegramBot = require('./telegram');
+const jwt = require('jsonwebtoken');
+import config from './config';
 
 function startApi(socket) {
   socket.on('login', request => {
     console.log('login', request);
     User.findOne({username: request.data.username}).then(user => {
       if (!user) {
-        socket.emit('alert', {msg: 'User ' + request.data.username + ' not found'});
+        socket.emit('alert', {message: 'User ' + request.data.username + ' not found'});
         return;
       }
       user.comparePassword(request.data.password, (err, isMatch) => {
         console.log('compare pwd', isMatch);
         if (isMatch) {
           // do login
+          const token = jwt.sign({username: user.username}, config.JWT_SECRET);
+          socket.emit('login', {msgId: request.msgId, data: {token}});
         } else {
-          socket.emit('alert', {msg: 'Password does not match'});
+          socket.emit('alert', {message: 'Password does not match'});
         }
       });
     }).catch((err) => {
@@ -27,48 +31,53 @@ function startApi(socket) {
     });
   });
 
-  socket.on('getTrades', request => {
-    console.log('getTrades', request);
-    getTrades(request.data).then(trades => {
-      socket.emit('getTrades', {msgId: request.msgId, data: {trades}});
+  // Authenticated
+  if (socket.token) {
+    socket.emit('authenticated', socket.token);
+
+    socket.on('getTrades', request => {
+      console.log('getTrades', request);
+      getTrades(request.data).then(trades => {
+        socket.emit('getTrades', {msgId: request.msgId, data: {trades}});
+      });
     });
-  });
 
-  socket.on('setTrade', request => {
-    console.log('setTrade', request);
-    setTrade(request.data).then(trade => {
-      Trade.populate(trade, {path: 'symbol'}).then(trade => {
-        socket.emit('setTrade', {msgId: request.msgId, data: {trade}});
-        telegramBot.sendTradeMessage(trade);
+    socket.on('setTrade', request => {
+      console.log('setTrade', request);
+      setTrade(request.data).then(trade => {
+        Trade.populate(trade, {path: 'symbol'}).then(trade => {
+          socket.emit('setTrade', {msgId: request.msgId, data: {trade}});
+          telegramBot.sendTradeMessage(trade);
 
-        getTotals().then(totalData => {
-          socket.emit('getTotals', {msgId: request.msgId, data: totalData});
-          telegramBot.sendTotalMessage(totalData);
+          getTotals().then(totalData => {
+            socket.emit('getTotals', {msgId: request.msgId, data: totalData});
+            telegramBot.sendTotalMessage(totalData);
+          });
         });
       });
     });
-  });
 
-  socket.on('deleteTrade', request => {
-    console.log('deleteTrade', request);
-    deleteTrade(request.data._id).then(trade => {
-      socket.emit('deleteTrade', {msgId: request.msgId, data: {trade}});
+    socket.on('deleteTrade', request => {
+      console.log('deleteTrade', request);
+      deleteTrade(request.data._id).then(trade => {
+        socket.emit('deleteTrade', {msgId: request.msgId, data: {trade}});
+      });
     });
-  });
 
-  socket.on('getTotals', request => {
-    console.log('getTotals', request);
-    getTotals().then(totalsData => {
-      socket.emit('getTotals', {msgId: request.msgId, data: totalsData});
+    socket.on('getTotals', request => {
+      console.log('getTotals', request);
+      getTotals().then(totalsData => {
+        socket.emit('getTotals', {msgId: request.msgId, data: totalsData});
+      });
     });
-  });
 
-  socket.on('getSymbols', request => {
-    console.log('getSymbols', request);
-    getSymbols().then(symbols => {
-      socket.emit('getSymbols', {msgId: request.msgId, data: symbols});
+    socket.on('getSymbols', request => {
+      console.log('getSymbols', request);
+      getSymbols().then(symbols => {
+        socket.emit('getSymbols', {msgId: request.msgId, data: symbols});
+      });
     });
-  });
+  }
 }
 
 function addUser({username, password}) {

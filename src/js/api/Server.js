@@ -49,20 +49,7 @@ class Server {
     if (token !== this.token) this.setToken(token);
 
     if (this.token) {
-      // Works in node.js only
-      // params.extraHeaders = {
-      //     'Authorization': 'Bearer ' + this.token
-      // };
-      params.transportOptions = {
-        polling: {
-          extraHeaders: {
-            'Authorization': 'Bearer ' + this.token
-          }
-        },
-        websocket: {
-          protocols: [this.token, 'backoffice']
-        }
-      }
+      params.query = {token};
     }
 
     this.socket = io.connect(

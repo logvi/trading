@@ -22,7 +22,7 @@ class Store {
   constructor() {
     if (!api.connected) {
       setLoading('Connecting to server...');
-      api.connect();
+      api.connect(this.user.token);
       api.on('connect', async() => {
         setLoading(false);
         this.router.resolve(location);

@@ -39,6 +39,13 @@ class Api extends Server {
     });
   };
 
+  onAuthenticated = callback => {
+    this.on('authenticated', response => {
+      callback(response)
+    });
+  };
+
+
   getSymbols = () => {
     return new Promise((resolve, reject) => {
       this.send('getSymbols', {}, response => {
