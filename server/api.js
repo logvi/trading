@@ -93,33 +93,35 @@ function addUser({username, password}) {
 function setTrade(data) {
   return new Promise((resolve, reject) => {
     const symbolData = data.symbol;
-    const options = {upsert: true, new: true, setDefaultsOnInsert: true};
-    Symbol.findOneAndUpdate({symbol: symbolData.symbol}, {
-      symbol: symbolData.symbol,
-      priceStep: symbolData.priceStep,
-      priceStepCost: symbolData.priceStepCost,
-      go: symbolData.go
-    }, options).then(symbol => {
-      // if (data.hasOwnProperty('id')) delete data.id;
-      if (!data._id || data._id === 'new') {
-        data._id = new mongoose.mongo.ObjectID();
-      }
-      Trade.findById(data._id).then(trade => {
-        if (!trade) trade = new Trade();
+    Symbol.findOne({symbol: symbolData.symbol}).then(symbol => {
+      if (!symbol) symbol = new Symbol();
 
-        trade.amount = data.amount;
-        trade.type = data.type;
-        trade.priceOpen = data.priceOpen;
-        trade.timeOpen = data.timeOpen;
-        trade.priceClose = data.priceClose;
-        trade.timeClose = data.timeClose;
-        trade.stopLoss = data.stopLoss;
-        trade.volume = data.volume;
-        trade.stopLossVolume = data.stopLossVolume;
-        trade.profit = data.profit;
-        trade.symbol = symbol._id;
+      symbol.symbol = symbolData.symbol;
+      symbol.priceStep = symbolData.priceStep;
+      symbol.priceStepCost = symbolData.priceStepCost;
+      symbol.go = symbolData.go;
 
-        trade.save().then(trade => resolve(trade)).catch(err => reject(err));
+      symbol.save().then(symbol => {
+        if (!data._id || data._id === 'new') {
+          data._id = new mongoose.mongo.ObjectID();
+        }
+        Trade.findById(data._id).then(trade => {
+          if (!trade) trade = new Trade();
+
+          trade.amount = data.amount;
+          trade.type = data.type;
+          trade.priceOpen = data.priceOpen;
+          trade.timeOpen = data.timeOpen;
+          trade.priceClose = data.priceClose;
+          trade.timeClose = data.timeClose;
+          trade.stopLoss = data.stopLoss;
+          trade.volume = data.volume;
+          trade.stopLossVolume = data.stopLossVolume;
+          trade.profit = data.profit;
+          trade.symbol = symbol._id;
+
+          trade.save().then(trade => resolve(trade)).catch(err => reject(err));
+        });
       });
     });
   });

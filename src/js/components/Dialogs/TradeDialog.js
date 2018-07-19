@@ -37,7 +37,6 @@ class TradeDialog extends Component {
   };
 
   onSymbolChange = value => {
-    console.log(value);
     this.props.trade.setValue('symbol', value);
   };
 

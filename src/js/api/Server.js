@@ -52,8 +52,6 @@ class Server {
       params.query = {token};
     }
 
-    console.log('connect', this.token);
-
     this.socket = io(
       secure ? config.sslhost : config.host,
       params
