@@ -96,7 +96,7 @@ class TradeStore {
     return new Promise((resolve, reject) => {
       api.setTrade(this.data).then(trade => {
         this.clear();
-        this.rootStore.trades.getData();
+        this.rootStore.trades.refresh();
         resolve(trade);
       });
     });
@@ -111,7 +111,7 @@ class TradeStore {
     return new Promise((resolve, reject) => {
       api.deleteTrade(this.data._id).then(() => {
         this.clear();
-        this.rootStore.trades.getData();
+        this.rootStore.trades.refresh();
         resolve(true);
       });
     });
