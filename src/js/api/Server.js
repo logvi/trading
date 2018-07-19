@@ -46,18 +46,22 @@ class Server {
       'force new connection': true
     };
 
-    if (token !== this.token) this.setToken(token);
+    if (token && token !== this.token) this.setToken(token);
 
     if (this.token) {
       params.query = {token};
     }
 
-    this.socket = io.connect(
+    console.log('connect', this.token);
+
+    this.socket = io(
       secure ? config.sslhost : config.host,
       params
     );
 
-    this.socket.on('connect', () => this.onConnect);
+    this.socket.on('connect', () => {
+      this.onConnect();
+    });
 
     this.socket.on('alert', response => {
       this.alertHandler(response);
@@ -71,21 +75,12 @@ class Server {
   }
 
   on(event, callback) {
-    if (!this.socket) {
-      if (!this.msgListeners[event]) {
-        this.msgListeners[event] = [callback];
-      } else {
-        this.msgListeners[event].push(callback);
-      }
-      return;
+    if (!this.msgListeners[event]) {
+      this.msgListeners[event] = [callback];
+    } else {
+      this.msgListeners[event].push(callback);
     }
-    if (event === 'connect') {
-      this.socket.on(event, () => {
-        this.onConnect();
-        callback();
-      });
-      return;
-    }
+    if (!this.socket) return;
     this.socket.on(event, callback);
   }
 
@@ -104,13 +99,13 @@ class Server {
     this.messagesQueue.forEach(data => this.send(data.type, data.msg));
     Object.keys(this.msgListeners).forEach(event => {
       this.msgListeners[event].map(callback => {
-        this.socket.on(event, data => callback(data))
+        this.socket.on(event, callback);
       });
     });
   }
 
   disconnect() {
-    this.socket.close();
+    this.socket.disconnect();
   }
 
   send(type, data, callback) {

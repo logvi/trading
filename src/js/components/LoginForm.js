@@ -7,8 +7,10 @@ import TextField from '@material-ui/core/TextField';
 @inject('user')
 @observer
 class LoginForm extends React.Component {
-  login = () => {
-    this.props.user.login();
+  onSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    this.props.user.login(form.username.value, form.password.value);
   };
 
   logout = () => {
@@ -16,29 +18,39 @@ class LoginForm extends React.Component {
   };
 
   renderForm() {
-    if (this.props.user.username) {
+    if (this.props.user.loggedIn) {
       return (
         <div style={{textAlign: 'center'}}>
           <div>{this.props.user.username}</div>
           <div style={{marginTop: 20}}>
-            <RaisedButton label="Logout" onClick={this.logout} primary />
+            <Button
+              variant="raised"
+              onClick={this.logout}
+              color="primary"
+            >
+              Logout
+            </Button>
           </div>
         </div>
       );
     }
     return (
-      <form>
+      <form name="login" onSubmit={this.onSubmit}>
         <TextField
           label="Username"
+          name="username"
+          required
         />
         <TextField
           label="Password"
+          name="password"
           type="password"
+          required
         />
         <Button
-          onClick={this.login}
           color="primary"
           variant="raised"
+          type="submit"
         >
           Login
         </Button>

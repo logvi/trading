@@ -1,8 +1,9 @@
 import {observable, action, autorun} from 'mobx';
+import setLoading from '../utils/setLoading';
 import api from '../api';
 
 class UserStore {
-  token = sessionStorage.getItem('token');
+  @observable token = sessionStorage.getItem('token');
   @observable username = '';
 
   constructor(rootStore) {
@@ -13,34 +14,42 @@ class UserStore {
     });
 
     autorun(() => {
-      if (!this.loggedIn) {
-        this.rootStore.router.goTo('login');
+      if (this.token) {
+        sessionStorage.setItem('token', this.token);
       } else {
-        this.rootStore.router.goTo('admin');
+        sessionStorage.removeItem('token');
       }
-    });
+    })
   }
 
   get loggedIn() {
-    return Boolean(this.username);
+    return Boolean(this.token);
   }
 
   @action login = (username, password) => {
+    setLoading('logging in...');
     api.login({username, password}).then(res => {
-      sessionStorage.setItem('token', res.token);
-      this.setUsername(username);
+      if (!res.token) return;
+        this.setToken(res.token);
+        this.setUsername(username);
+        this.rootStore.router.goTo('admin');
     });
   };
 
   @action logout = () => {
-    this.username = '';
-    api.disconnect();
-    sessionStorage.removeItem('token');
+    setLoading('logging out...');
+    this.setToken(null);
+    api.setToken(null);
+    this.rootStore.router.goTo('login');
   };
 
   @action setUsername = value => {
     this.username = value;
   };
+
+  @action setToken = value => {
+    this.token = value;
+  }
 }
 
 export default UserStore;

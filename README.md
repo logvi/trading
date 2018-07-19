@@ -16,4 +16,4 @@
 14. (+) Client: get totals
 15. (+) Client: styling table
 16: (+) Telegram: init
-17: Authentification
+17: Authentication

@@ -13,21 +13,14 @@ class Store {
   trades = new TradesStore(this);
   modal = new ModalStore();
   loader = new LoaderStore();
-  router = new Router(this);
+  user = new UserStore(this);
   trade = new TradeStore(this);
   symbols = new SymbolsStore();
-  user = new UserStore(this);
   view = new ViewStore();
+  router = new Router(this);
 
   constructor() {
-    if (!api.connected) {
-      setLoading('Connecting to server...');
-      api.connect(this.user.token);
-      api.on('connect', async() => {
-        setLoading(false);
-        this.router.resolve(location);
-      });
-    }
+    this.router.resolve(location);
   }
 }
 

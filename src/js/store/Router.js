@@ -45,21 +45,20 @@ class Router {
   resolve(location) {
     // check login
     if (location.pathname !== '/login') {
-      if (!this.store.user.loggedIn) {
+      if (!this.store.user.token) {
         this.history.replace('/login');
         setLoading(false);
         return;
-      } else {
-        if (!api.connected) {
-          setLoading('Connecting to server...');
-          api.connect();
-          api.on('connect', async() => {
-            setLoading(false);
-            this.resolve(location);
-          });
-          return;
-        }
       }
+    }
+    if (!api.connected) {
+      setLoading('Connecting to server...');
+      api.connect(this.store.user.token);
+      api.socket.once('connect', async() => {
+        setLoading(false);
+        this.resolve(location);
+      });
+      return;
     }
     setLoading(false);
     this.router.resolve({pathname: location.pathname, ...location.state});

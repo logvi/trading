@@ -4,7 +4,7 @@ const utils = require('./utils');
 const Trade = require('./Trade');
 const Symbol = require('./Symbol');
 const User = require('./User');
-const telegramBot = require('./telegram');
+// const telegramBot = require('./telegram');
 const jwt = require('jsonwebtoken');
 const config = require('./config');
 
@@ -13,7 +13,7 @@ function startApi(socket) {
     console.log('login', request);
     User.findOne({username: request.data.username}).then(user => {
       if (!user) {
-        socket.emit('alert', {message: 'User ' + request.data.username + ' not found'});
+        socket.emit('alert', {msgId: request.msgId, data: {message: 'User ' + request.data.username + ' not found'}});
         return;
       }
       user.comparePassword(request.data.password, (err, isMatch) => {
@@ -22,8 +22,9 @@ function startApi(socket) {
           // do login
           const token = jwt.sign({username: user.username}, config.JWT_SECRET);
           socket.emit('login', {msgId: request.msgId, data: {token}});
+          socket.token = {username: user.username};
         } else {
-          socket.emit('alert', {message: 'Password does not match'});
+          socket.emit('alert', {msgId: request.msgId, data: {message: 'Password is not correct'}});
         }
       });
     }).catch((err) => {

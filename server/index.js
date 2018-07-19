@@ -14,7 +14,7 @@ io.use((socket, next) => {
   const handshakeData = socket.handshake;
   if (handshakeData.query.token) {
     jwt.verify(handshakeData.query.token, config.JWT_SECRET, function(err, decoded) {
-      if(err) return next(new Error('Authentication error'));
+      if(err) return next();
       socket.token = decoded;
       next();
     });

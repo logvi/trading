@@ -60,7 +60,8 @@ class Api extends Server {
         resolve(response);
       });
     });
-  }
+  };
 }
 
-export default new Api();
+const api = new Api();
+export default api;
