@@ -1,5 +1,3 @@
-import api from '../api';
-import setLoading from '../utils/setLoading';
 import TradesStore from './TradesStore';
 import ModalStore from './ModalStore';
 import TradeStore from './TradeStore';

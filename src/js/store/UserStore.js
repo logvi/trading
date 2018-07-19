@@ -32,7 +32,10 @@ class UserStore {
       if (!res.token) return;
         this.setToken(res.token);
         this.setUsername(username);
+        api.disconnect();
         this.rootStore.router.goTo('admin');
+    }).catch(err => {
+      setLoading(false);
     });
   };
 
@@ -40,6 +43,7 @@ class UserStore {
     setLoading('logging out...');
     this.setToken(null);
     api.setToken(null);
+    api.disconnect();
     this.rootStore.router.goTo('login');
   };
 

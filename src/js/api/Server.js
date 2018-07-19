@@ -94,6 +94,7 @@ class Server {
   };
 
   onConnect() {
+    this.methodListeners = {};
     this.messagesQueue.forEach(data => this.send(data.type, data.msg));
     Object.keys(this.msgListeners).forEach(event => {
       this.msgListeners[event].map(callback => {
