@@ -55,6 +55,8 @@ function startApi(socket) {
             telegramBot.sendTotalMessage(totalData);
           });
         });
+      }).catch(err => {
+        socket.emit('alert', {msgId: request.msgId, data: {message: err.message}});
       });
     });
 
@@ -122,6 +124,8 @@ function setTrade(data) {
 
           trade.save().then(trade => resolve(trade)).catch(err => reject(err));
         });
+      }).catch(err => {
+        reject(err);
       });
     });
   });

@@ -10,7 +10,7 @@ const formatDate = (date, {displayTime = true} = {}) => {
 function toDatetimeLocal(value) {
   if (!value) return '';
   let
-    date = value,
+    date = value instanceof Date ? value : new Date(value),
     ten = function (i) {
       return (i < 10 ? '0' : '') + i;
     },
